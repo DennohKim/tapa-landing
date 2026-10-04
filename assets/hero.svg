@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="760" viewBox="0 0 1400 760" role="img" aria-labelledby="t d">
+  <title id="t">Tapa — tap your wristband to pay</title>
+  <desc id="d">Halftone comic illustration: a hand wearing a yellow Tapa NFC wristband taps toward a small card reader that shows a check mark.</desc>
+
+  <defs>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#171717" stroke-opacity=".055"/>
+    </pattern>
+    <pattern id="toneLight" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
+      <circle cx="4.5" cy="4.5" r="1.3" fill="#171717"/>
+    </pattern>
+    <pattern id="toneDense" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
+      <circle cx="3.5" cy="3.5" r="1.9" fill="#171717"/>
+    </pattern>
+    <pattern id="toneYellow" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
+      <circle cx="4" cy="4" r="1.5" fill="#171717" fill-opacity=".5"/>
+    </pattern>
+    <linearGradient id="gDown" x1="0" y1="0" x2="0" y2="1"><stop offset=".45" stop-color="#000"/><stop offset="1" stop-color="#fff"/></linearGradient>
+    <linearGradient id="gRight" x1="0" y1="0" x2="1" y2="0"><stop offset=".55" stop-color="#000"/><stop offset="1" stop-color="#fff"/></linearGradient>
+    <radialGradient id="gOut"><stop offset=".25" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient>
+    <mask id="mDown" maskContentUnits="objectBoundingBox"><rect width="1" height="1" fill="url(#gDown)"/></mask>
+    <mask id="mRight" maskContentUnits="objectBoundingBox"><rect width="1" height="1" fill="url(#gRight)"/></mask>
+    <mask id="mOut" maskContentUnits="objectBoundingBox"><rect width="1" height="1" fill="url(#gOut)"/></mask>
+
+    <path id="arm" d="M-300,-74 L-12,-56 Q0,-56 0,-46 L0,46 Q0,56 -12,56 L-300,74 Z"/>
+    <path id="sleeve" d="M-900,-150 L-330,-100 Q-316,-98 -316,-84 L-316,84 Q-316,98 -330,100 L-900,150 Z"/>
+    <path id="palm" d="M0,-52 C40,-64 80,-66 122,-60 L122,56 C80,64 40,64 0,52 Z"/>
+    <path id="thumb" d="M40,-50 C50,-74 110,-78 128,-58 C132,-48 122,-40 110,-42 C90,-46 70,-48 40,-50 Z"/>
+    <path id="bandFront" d="M14,-62 C0,-22 0,22 14,62 L54,62 C40,22 40,-22 54,-62 Z"/>
+    <path id="spark" d="M0,-14 C2,-4 4,-2 14,0 C4,2 2,4 0,14 C-2,4 -4,2 -14,0 C-4,-2 -2,-4 0,-14 Z"/>
+    <path id="termBody" d="M26,0 H194 A26,26 0 0 1 220,26 V304 A26,26 0 0 1 194,330 H26 A26,26 0 0 1 0,304 V26 A26,26 0 0 1 26,0 Z"/>
+  </defs>
+
+  <rect width="1400" height="760" rx="32" fill="#FCFAF3"/>
+  <rect width="1400" height="760" rx="32" fill="url(#grid)"/>
+
+  <g fill="url(#toneDense)">
+    <ellipse cx="720" cy="610" rx="260" ry="28" mask="url(#mOut)"/>
+    <ellipse cx="1070" cy="570" rx="175" ry="22" mask="url(#mOut)"/>
+  </g>
+
+  <!-- POS reader -->
+  <g transform="translate(985,205) rotate(-6)">
+    <rect x="62" y="-10" width="96" height="14" rx="5" fill="#171717"/>
+    <use href="#termBody" fill="#fff" stroke="#171717" stroke-width="4" stroke-linejoin="round"/>
+    <use href="#termBody" fill="url(#toneLight)" mask="url(#mRight)"/>
+    <rect x="24" y="28" width="172" height="130" rx="12" fill="#fff" stroke="#171717" stroke-width="3"/>
+    <rect x="24" y="28" width="172" height="130" rx="12" fill="url(#toneLight)" mask="url(#mDown)" opacity=".45"/>
+    <circle cx="110" cy="93" r="40" fill="#F6C85F" stroke="#171717" stroke-width="3"/>
+    <path d="M90,94 L104,108 L132,76" fill="none" stroke="#171717" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <g fill="#fff" stroke="#171717" stroke-width="2.5">
+      <rect x="30" y="178" width="44" height="26" rx="7"/><rect x="88" y="178" width="44" height="26" rx="7"/><rect x="146" y="178" width="44" height="26" rx="7"/>
+      <rect x="30" y="214" width="44" height="26" rx="7"/><rect x="88" y="214" width="44" height="26" rx="7"/><rect x="146" y="214" width="44" height="26" rx="7"/>
+      <rect x="30" y="250" width="44" height="26" rx="7"/><rect x="88" y="250" width="44" height="26" rx="7"/><rect x="146" y="250" width="44" height="26" rx="7"/>
+      <rect x="30" y="286" width="44" height="26" rx="7"/><rect x="88" y="286" width="44" height="26" rx="7" fill="#F6C85F"/><rect x="146" y="286" width="44" height="26" rx="7"/>
+    </g>
+  </g>
+
+  <!-- tap waves -->
+  <g fill="none" stroke="#171717" stroke-width="5" stroke-linecap="round">
+    <path d="M570,205.7 A80,80 0 0 1 682.5,241.2"/>
+    <path d="M545,162.4 A130,130 0 0 1 727.8,220.1"/>
+    <path d="M520,119.1 A180,180 0 0 1 773.1,198.9"/>
+  </g>
+
+  <!-- arm, band, fist -->
+  <g transform="translate(640,420) rotate(-33.7) scale(1.45)" stroke="#171717" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+    <use href="#arm" fill="#fff"/>
+    <use href="#arm" fill="url(#toneLight)" stroke="none" mask="url(#mDown)"/>
+    <use href="#sleeve" fill="#fff"/>
+    <use href="#sleeve" fill="url(#toneDense)" stroke="none" mask="url(#mDown)" opacity=".7"/>
+    <rect x="-328" y="-92" width="36" height="184" rx="8" fill="#fff"/>
+    <path d="M-318,-70 L-318,70 M-306,-74 L-306,74" fill="none" stroke-width="2" opacity=".5"/>
+    <path d="M-150,-30 C-110,-38 -70,-38 -30,-32" fill="none" stroke-width="3" opacity=".6"/>
+
+    <use href="#palm" fill="#fff"/>
+    <use href="#palm" fill="url(#toneLight)" stroke="none" mask="url(#mDown)"/>
+    <g fill="#fff">
+      <rect x="104" y="-58" width="76" height="30" rx="15"/>
+      <rect x="112" y="-30" width="76" height="30" rx="15"/>
+      <rect x="112" y="-2" width="76" height="30" rx="15"/>
+      <rect x="104" y="26" width="76" height="30" rx="15"/>
+    </g>
+    <rect x="104" y="26" width="76" height="30" rx="15" fill="url(#toneLight)" stroke="none" mask="url(#mDown)"/>
+    <rect x="112" y="-2" width="76" height="30" rx="15" fill="url(#toneLight)" stroke="none" mask="url(#mDown)" opacity=".6"/>
+    <use href="#thumb" fill="#fff"/>
+    <path d="M70,-56 C84,-66 110,-68 124,-60" fill="none" stroke-width="2.5" opacity=".55"/>
+
+    <path d="M14,-62 C14,-72 54,-72 54,-62 L54,62 C54,72 14,72 14,62 Z" fill="#F6C85F"/>
+    <use href="#bandFront" fill="#F6C85F"/>
+    <use href="#bandFront" fill="url(#toneYellow)" stroke="none" mask="url(#mDown)"/>
+    <path d="M14,-62 C14,-72 54,-72 54,-62" fill="none" stroke-width="3"/>
+    <rect x="2" y="-100" width="64" height="38" rx="12" fill="#F6C85F"/>
+    <text x="34" y="-74" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="19" font-weight="800" letter-spacing="-.5" fill="#171717" stroke="none">tapa</text>
+  </g>
+
+  <g fill="#F6C85F" stroke="#171717" stroke-width="2.5" stroke-linejoin="round">
+    <use href="#spark" transform="translate(430,80) scale(1.1)"/>
+    <use href="#spark" transform="translate(840,110) scale(.75)"/>
+    <use href="#spark" transform="translate(1290,180)"/>
+    <use href="#spark" transform="translate(890,430) scale(.7)"/>
+    <use href="#spark" transform="translate(280,300) scale(.85)"/>
+  </g>
+</svg>
