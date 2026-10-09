@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tapa · C · Strap print</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  /* C: the page is a strap print. Cobalt field, woven straps crossing it, the balance ticking down as guests tap. */
+  :root {
+    color-scheme: light;
+    --ground: #2140E8; --ink: #F4F1E6; --ink-2: #D6DCFF; --dark: #0E1230;
+    --accent: #FFD23F; --accent-ink: #0E1230;
+    --font: "M PLUS Rounded 1c", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --g: clamp(20px, 4vw, 64px);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--font); font-size: 18px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  .hero { position: relative; min-height: 100svh; overflow: hidden; }
+  .straps { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .nav { position: relative; z-index: 3; display: flex; align-items: center; gap: 28px; padding: 22px var(--g); }
+  .lockup { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 900; font-size: 28px; letter-spacing: -.02em; }
+  .tile { width: 36px; height: 36px; border-radius: 10px; background: #FB5B37; color: #ECEBDB; display: grid; place-items: center; }
+  .nav nav { display: flex; gap: 26px; margin-left: auto; font-weight: 700; font-size: 16px; }
+  .nav nav a { text-decoration: none; }
+  .btn { display: inline-flex; align-items: center; gap: 12px; height: 58px; padding: 0 26px; border-radius: 29px; background: var(--accent); color: var(--accent-ink); text-decoration: none; font-weight: 800; font-size: 18px; border: 1px solid transparent; box-shadow: 0 4px 0 var(--dark); }
+  .nav .btn { height: 44px; padding: 0 20px; font-size: 15px; box-shadow: 0 3px 0 var(--dark); }
+  :focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+  .copy { position: relative; z-index: 3; padding: clamp(24px, 6vh, 72px) var(--g) 0; max-width: 980px; }
+  h1 { margin: 0; font-size: clamp(54px, 8vw, 128px); line-height: .92; font-weight: 900; letter-spacing: -.045em; text-wrap: balance; }
+  .copy p { margin: 26px 0 30px; max-width: 34ch; font-size: clamp(17px, 1.4vw, 20px); font-weight: 500; color: var(--ink-2); }
+  .balance { position: absolute; z-index: 3; right: var(--g); bottom: clamp(28px, 6vh, 64px); text-align: right; color: var(--ink); }
+  .balance small { display: block; font-size: 15px; font-weight: 800; }
+  .balance b { display: block; font-size: clamp(64px, 9vw, 150px); line-height: .9; font-weight: 900; letter-spacing: -.05em; font-variant-numeric: tabular-nums; }
+  .balance ol { list-style: none; margin: 10px 0 0; padding: 0; font-size: 16px; font-weight: 700; }
+  .balance li { padding: 4px 0; }
+  @media (max-width: 900px) {
+    .nav nav { display: none; } .nav .btn { margin-left: auto; }
+    .balance { left: var(--g); text-align: left; }
+  }
+</style>
+</head>
+<body>
+<section class="hero" aria-labelledby="h1">
+  <svg class="straps" id="straps" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <pattern id="weave" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(28)"><rect width="6" height="6" fill="none"/><rect width="2" height="6" fill="#fff" opacity=".07"/><rect width="6" height="1" fill="#000" opacity=".08"/></pattern>
+      <linearGradient id="sheen" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1440" y2="900"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".38" stop-color="#fff" stop-opacity=".22"/><stop offset=".46" stop-color="#fff" stop-opacity="0"/><stop offset=".7" stop-color="#000" stop-opacity=".18"/><stop offset="1" stop-color="#fff" stop-opacity=".12"/></linearGradient>
+      <path id="s1" d="M-120 560 C 260 420, 520 820, 900 640 S 1380 380, 1600 520"/>
+      <path id="s2" d="M820 -80 C 980 160, 1120 260, 1180 480 S 1100 860, 1320 1020"/>
+      <path id="s3" d="M-80 860 C 300 760, 640 980, 1000 900"/>
+    </defs>
+    <g id="g-s3" data-depth="8">
+      <use href="#s3" stroke="#191310" stroke-width="128" fill="none"/>
+      <use href="#s3" stroke="#ECEBDB" stroke-width="108" fill="none" stroke-dasharray="14 9" opacity=".7"/>
+      <use href="#s3" stroke="#191310" stroke-width="98" fill="none"/>
+      <text font-family="M PLUS Rounded 1c" font-weight="900" font-size="54" fill="#ECEBDB" dy="19" letter-spacing="2"><textPath href="#s3" startOffset="30">tapa · KILELE NIGHTS · tapa · KILELE NIGHTS · tapa</textPath></text>
+      <use href="#s3" stroke="url(#weave)" stroke-width="128" fill="none"/>
+    </g>
+    <g id="g-s2" data-depth="18">
+      <use href="#s2" stroke="#FFD23F" stroke-width="150" fill="none"/>
+      <use href="#s2" stroke="#FB5B37" stroke-width="128" fill="none" stroke-dasharray="20 14"/>
+      <use href="#s2" stroke="#FFD23F" stroke-width="116" fill="none"/>
+      <text font-family="M PLUS Rounded 1c" font-weight="900" font-size="62" fill="#FB5B37" dy="22"><textPath href="#s2" startOffset="40">• tap • tap • tap • tap • tap • tap</textPath></text>
+      <use href="#s2" stroke="url(#weave)" stroke-width="150" fill="none"/>
+      <use href="#s2" stroke="url(#sheen)" stroke-width="150" fill="none"/>
+    </g>
+    <g id="g-s1" data-depth="30">
+      <use href="#s1" stroke="#FB5B37" stroke-width="170" fill="none"/>
+      <use href="#s1" stroke="#ECEBDB" stroke-width="146" fill="none" stroke-dasharray="18 11" opacity=".85"/>
+      <use href="#s1" stroke="#FB5B37" stroke-width="134" fill="none"/>
+      <text font-family="M PLUS Rounded 1c" font-weight="900" font-size="78" fill="#ECEBDB" dy="27" letter-spacing="-1"><textPath href="#s1" startOffset="80">tapa   KES 650   tapa   KES 300   tapa   KES 1,200</textPath></text>
+      <use href="#s1" stroke="url(#weave)" stroke-width="170" fill="none"/>
+      <use href="#s1" stroke="url(#sheen)" stroke-width="170" fill="none"/>
+    </g>
+  </svg>
+  <header class="nav">
+    <a class="lockup" href="#top" aria-label="Tapa home"><span class="tile" data-mark="24"></span>tapa</a>
+    <nav aria-label="Main"><a href="#how">How it works</a><a href="#stands">For stands</a><a href="#faq">Questions</a></nav>
+    <a class="btn" href="mailto:hello@expendi.app?subject=Tapa%20for%20our%20event">Talk to us</a>
+  </header>
+  <div class="copy" id="top">
+    <h1 id="h1">Your ticket is now your wallet</h1>
+    <p>Guests load money onto an NFC wristband with M-Pesa and tap to pay at every bar and stand. About a second per sale, even when the signal drops.</p>
+    <a class="btn" href="mailto:hello@expendi.app?subject=Tapa%20for%20our%20event">Talk to us about your event</a>
+  </div>
+  <div class="balance" aria-live="off">
+    <small>Achieng's band · balance</small>
+    <b id="bal">KES 1,350</b>
+    <ol id="log"><li>Kilele Bar −650</li></ol>
+  </div>
+</section>
+<script>
+  const MARK = (s) => `<svg width="${s}" height="${s}" viewBox="87 98.5 480 480" aria-hidden="true"><defs><mask id="m${s}"><rect x="87" y="98.5" width="480" height="480" fill="#fff"/><rect x="400" y="328" width="57" height="21" fill="#000"/><rect x="479" y="328" width="45" height="21" fill="#000"/></mask></defs><g mask="url(#m${s})" fill="currentColor"><path fill-rule="evenodd" d="M143 338.5a173.5 173.5 0 1 0 347 0a173.5 173.5 0 1 0 -347 0ZM224.5 338.5a100 103.5 0 1 0 200 0a100 103.5 0 1 0 -200 0Z"/><rect x="432" y="172" width="79" height="334"/></g></svg>`;
+  for (const el of document.querySelectorAll("[data-mark]")) el.innerHTML = MARK(el.dataset.mark);
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const steps = [[2000, "M-Pesa top-up +2,000"], [1350, "Kilele Bar −650"], [1050, "Merch tent −300"], [450, "Nyama Choma Grill −600"]];
+  const bal = document.getElementById("bal"), log = document.getElementById("log");
+  let shown = 1350, i = 1;
+  const fmt = (n) => "KES " + n.toLocaleString("en-KE");
+  function tick() {
+    i = (i + 1) % steps.length;
+    const [to, line] = steps[i], from = shown, t0 = performance.now();
+    log.innerHTML = `<li>${line}</li>`;
+    log.firstChild.animate([{ transform: "translateY(10px)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 320, easing: "cubic-bezier(.2,.8,.2,1)" });
+    (function step(t) {
+      const k = Math.min(1, (t - t0) / 700), e = 1 - Math.pow(1 - k, 3);
+      shown = Math.round(from + (to - from) * e);
+      bal.textContent = fmt(shown);
+      if (k < 1) requestAnimationFrame(step);
+    })(t0);
+  }
+  if (!reduced) {
+    setInterval(tick, 2600);
+    const groups = [...document.querySelectorAll("[data-depth]")];
+    let tx = 0, ty = 0, x = 0, y = 0;
+    addEventListener("pointermove", (e) => { tx = e.clientX / innerWidth - 0.5; ty = e.clientY / innerHeight - 0.5; });
+    (function drift(t) {
+      x += (tx - x) * 0.08; y += (ty - y) * 0.08;
+      for (const g of groups) { const d = +g.dataset.depth; g.setAttribute("transform", `translate(${x * d + Math.sin(t / 3000 + d) * d * 0.3} ${y * d})`); }
+      requestAnimationFrame(drift);
+    })(0);
+  }
+</script>
+</body>
+</html>

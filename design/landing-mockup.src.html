@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tapa · Cashless payments for events in Kenya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mona+Sans:wdth,wght@75..125,200..900&display=block" rel="stylesheet">
+<style>
+  /* Tapa landing, in the wristband language of the POS redesign (terminal-pos/design/DIRECTION.md).
+     Canvas ground, ink type, orange only where something moves forward, state colours only with their meaning. */
+  :root {
+    --canvas: #EDEAE4; --paper: #F6F4F0; --ink: #170B05; --ink-2: #4E433C; --ink-3: #85786E; --rule: rgba(23,11,5,.14);
+    --cream: #ECEBDB; --cream-2: rgba(236,235,219,.74);
+    --orange: #FB5B37; --paid: #23C865; --held: #FFD23F; --red: #C9261E;
+    --gutter: clamp(20px, 4vw, 56px); --max: 1280px;
+    --smooth: linear(0, 0.157, 0.438, 0.66, 0.808, 0.897, 0.948, 0.976, 0.99, 0.997, 1);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--canvas); color: var(--ink); font-family: "Mona Sans", "Helvetica Neue", Arial, sans-serif; font-size: 17px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  .wrap { max-width: var(--max); margin: 0 auto; padding-inline: var(--gutter); }
+  .display { font-weight: 900; font-stretch: 115%; letter-spacing: -0.035em; line-height: .94; margin: 0; text-wrap: balance; }
+  .h2 { font-weight: 900; font-stretch: 115%; letter-spacing: -0.03em; line-height: 1; margin: 0; font-size: clamp(38px, 5.2vw, 72px); text-wrap: balance; }
+  .h3 { font-weight: 800; font-stretch: 115%; letter-spacing: -0.015em; line-height: 1.1; margin: 0; font-size: clamp(22px, 2.2vw, 28px); }
+  .lede { font-size: clamp(17px, 1.5vw, 20px); line-height: 1.5; color: var(--ink-2); margin: 0; max-width: 38ch; }
+  .label { font-size: 13px; font-weight: 800; font-stretch: 115%; letter-spacing: .02em; }
+  .meta { font-size: 14px; color: var(--ink-2); }
+  .go { display: inline-flex; align-items: center; gap: 12px; height: 56px; padding: 0 8px 0 24px; border-radius: 28px; background: var(--orange); color: var(--ink); text-decoration: none; font-weight: 800; font-stretch: 115%; font-size: 17px; }
+  .go i { width: 40px; height: 40px; border-radius: 20px; background: var(--ink); color: var(--cream); display: grid; place-items: center; }
+  .go:focus-visible, .textlink:focus-visible, nav a:focus-visible, summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+  .textlink { font-weight: 800; font-stretch: 115%; text-decoration: none; border-bottom: 2px solid var(--ink); padding-bottom: 2px; }
+  svg.i { display: block; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* the band: woven ink strap with stitched edges */
+  .band { position: relative; height: 72px; background-color: var(--ink); background-image: repeating-linear-gradient(90deg, rgba(255,255,255,.055) 0 2px, transparent 2px 6px); color: var(--cream); overflow: hidden; }
+  .band::before, .band::after { content: ""; position: absolute; left: 0; right: 0; border-top: 1.5px dashed rgba(236,235,219,.26); z-index: 1; }
+  .band::before { top: 9px; } .band::after { bottom: 9px; }
+  .ticker { position: absolute; inset: 0; display: flex; align-items: center; white-space: nowrap; }
+  .ticker span { flex: none; font-size: 15px; font-weight: 800; font-stretch: 125%; letter-spacing: .14em; text-transform: uppercase; animation: feed 40s linear infinite; }
+  .ticker span b { color: var(--orange); font-weight: 800; }
+  @keyframes feed { to { transform: translateX(-50%); } }
+  .clasp { width: 64px; height: 52px; border-radius: 10px; background: var(--orange); color: var(--cream); display: grid; place-items: center; }
+
+  /* nav */
+  header.nav { position: sticky; top: 0; z-index: 50; background: color-mix(in srgb, var(--canvas) 92%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid transparent; }
+  .nav .wrap { display: flex; align-items: center; gap: 28px; height: 76px; }
+  .lockup { display: inline-flex; align-items: flex-start; gap: calc(var(--t) * .158); --t: 36px; text-decoration: none; color: var(--ink); }
+  .lockup .tile { width: var(--t); height: var(--t); border-radius: 18%; background: var(--orange); color: #EBEBDA; display: grid; place-items: center; flex: none; }
+  .lockup .wm { height: calc(var(--t) * .566); margin-top: calc(var(--t) * .253); display: block; }
+  .lockup .wm svg { height: 100%; width: auto; display: block; }
+  .nav nav { display: flex; gap: 28px; margin-left: auto; }
+  .nav nav a { text-decoration: none; font-weight: 600; font-size: 15px; color: var(--ink-2); }
+  .nav .go { height: 44px; padding: 0 20px; font-size: 15px; }
+
+  /* hero */
+  .hero { padding-top: clamp(40px, 7vw, 96px); }
+  .hero .wrap { position: relative; z-index: 3; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); gap: 48px; align-items: end; }
+  .hero h1 { font-size: clamp(54px, 8.4vw, 124px); }
+  .hero .copy { display: flex; flex-direction: column; gap: 36px; padding-bottom: 56px; }
+  .hero .actions { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
+  .facts { display: flex; gap: 32px; flex-wrap: wrap; padding-top: 4px; }
+  .facts div { display: flex; flex-direction: column; }
+  .facts b { font-size: 28px; font-weight: 900; font-stretch: 115%; letter-spacing: -.02em; line-height: 1.1; }
+  .facts span { font-size: 14px; color: var(--ink-2); }
+
+  /* the terminal (Sunmi V2s) playing a real sale */
+  .terminal { justify-self: center; position: relative; width: 300px; padding: 46px 14px 30px; border-radius: 38px; background: #24201D; box-shadow: 0 40px 80px -40px rgba(23,11,5,.55), inset 0 1px 0 rgba(255,255,255,.08); margin-bottom: -36px; z-index: 2; }
+  .terminal::before { content: ""; position: absolute; top: 18px; left: 50%; width: 120px; height: 6px; margin-left: -60px; border-radius: 3px; background: #0F0C0A; }
+  .terminal .nfc { position: absolute; top: -26px; left: 50%; transform: translateX(-50%); font-size: 12px; font-weight: 700; color: var(--ink-3); white-space: nowrap; }
+  .screen { position: relative; width: 272px; height: 544px; border-radius: 16px; overflow: hidden; background: var(--canvas); }
+  .scr { position: absolute; inset: 0; width: 360px; height: 720px; transform: scale(.7556); transform-origin: 0 0; font-family: "Mona Sans", sans-serif; }
+  .scr .bar { position: absolute; inset: 0 0 auto 0; height: 24px; display: flex; justify-content: space-between; align-items: center; padding: 0 14px 0 16px; font: 500 12px/1 Roboto, system-ui, sans-serif; z-index: 20; }
+  .scr .body { position: absolute; inset: 24px 0 48px; display: flex; flex-direction: column; padding: 0 16px; }
+  .scr .nav3 { position: absolute; left: 0; right: 0; bottom: 0; height: 48px; display: flex; align-items: center; justify-content: space-between; padding: 0 56px; color: rgba(23,11,5,.6); z-index: 20; }
+  .scr .lbl { height: 56px; display: grid; place-items: center; font-size: 13px; font-weight: 600; color: rgba(23,11,5,.76); }
+  .s-across { position: relative; margin: 8px -16px 0; height: 96px; flex: none; background-color: var(--ink); background-image: repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0 2px, transparent 2px 6px); }
+  .s-across::before, .s-across::after { content: ""; position: absolute; left: 0; right: 0; border-top: 1.5px dashed rgba(236,235,219,.24); }
+  .s-across::before { top: 9px; } .s-across::after { bottom: 9px; }
+  .s-tick { position: absolute; top: 0; bottom: 0; display: flex; align-items: center; overflow: hidden; color: var(--cream); }
+  .s-tick.l { left: 0; right: calc(50% + 61px); justify-content: flex-end; } .s-tick.r { left: calc(50% + 61px); right: 0; }
+  .s-tick span { flex: none; white-space: nowrap; font-size: 14px; font-weight: 800; font-stretch: 125%; letter-spacing: 2px; }
+  .s-tick.l span { animation: feed-r 14s linear infinite; } .s-tick.r span { animation: feed-l 14s linear infinite; }
+  @keyframes feed-r { to { transform: translateX(50%); } } @keyframes feed-l { to { transform: translateX(-50%); } }
+  .read .s-tick span { animation-play-state: paused; opacity: .55; }
+  .s-buckle { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: flex; gap: 34px; color: var(--cream); z-index: 2; transition: gap 180ms cubic-bezier(.3,1.4,.5,1); }
+  .s-buckle > span { width: 42px; height: 72px; background: var(--orange); border-radius: 10px 3px 3px 10px; transition: border-radius 180ms, width 180ms; }
+  .s-buckle > span + span { border-radius: 3px 10px 10px 3px; }
+  .s-buckle svg { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+  .read .s-buckle { gap: 0; } .read .s-buckle > span { width: 48px; border-radius: 10px 0 0 10px; } .read .s-buckle > span + span { border-radius: 0 10px 10px 0; }
+  .s-sew { position: absolute; height: 2px; opacity: 0; background: repeating-linear-gradient(90deg, var(--orange) 0 6px, transparent 6px 10px);
+           -webkit-mask-image: linear-gradient(90deg, transparent, #000 35%, #000 65%, transparent); mask-image: linear-gradient(90deg, transparent, #000 35%, #000 65%, transparent);
+           -webkit-mask-size: 55% 100%; mask-size: 55% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; }
+  .s-sew.tl, .s-sew.tr { top: 8.5px; } .s-sew.bl, .s-sew.br { bottom: 8.5px; }
+  .s-sew.tl, .s-sew.bl { left: 0; right: calc(50% + 48px); } .s-sew.tr, .s-sew.br { left: calc(50% + 48px); right: 0; }
+  .read .s-sew { opacity: 1; } .read .s-sew.tl, .read .s-sew.bl { animation: sew-r 900ms cubic-bezier(.45,0,.55,1) infinite; } .read .s-sew.tr, .read .s-sew.br { animation: sew-l 900ms cubic-bezier(.45,0,.55,1) infinite; }
+  @keyframes sew-r { from { -webkit-mask-position: -120% 0; mask-position: -120% 0; } to { -webkit-mask-position: 220% 0; mask-position: 220% 0; } }
+  @keyframes sew-l { from { -webkit-mask-position: 220% 0; mask-position: 220% 0; } to { -webkit-mask-position: -120% 0; mask-position: -120% 0; } }
+  .nudge { display: flex; gap: 10px; padding-top: 18px; }
+  .nudge b { display: block; font-size: 26px; line-height: 30px; font-weight: 800; font-stretch: 115%; }
+  .nudge span { font-size: 15px; color: rgba(23,11,5,.76); }
+  .s-amt { font-size: 96px; line-height: 86px; font-weight: 900; font-stretch: 125%; letter-spacing: -3.8px; margin-left: -4px; padding-bottom: 10px; }
+  .s-cancel { height: 56px; border-radius: 12px; border: 1.5px solid var(--ink); display: grid; place-items: center; font-size: 19px; font-weight: 800; font-stretch: 115%; margin-bottom: 4px; }
+  .s-flood { position: absolute; left: 50%; top: 136px; width: 1500px; height: 1500px; margin: -750px 0 0 -750px; border-radius: 50%; background: var(--paid); transform: scale(0); z-index: 10; }
+  .s-paid { position: absolute; inset: 0; background: var(--paid); z-index: 11; opacity: 0; transition: opacity 120ms; }
+  .s-paid.on { opacity: 1; }
+  .s-paid .word { font-size: 140px; line-height: 120px; font-weight: 900; font-stretch: 125%; letter-spacing: -6px; margin: 24px 0 0 -6px; }
+  .s-paid .amt { font-size: 40px; line-height: 40px; font-weight: 900; font-stretch: 125%; letter-spacing: -1.2px; margin-top: 16px; }
+  .s-paid .amt small { font-size: 19px; font-weight: 800; letter-spacing: 0; }
+  .s-paid .ruled { display: flex; justify-content: space-between; border-top: 2px solid var(--ink); padding-top: 14px; margin-bottom: 16px; font-size: 15px; }
+  .s-paid .ruled b { font-size: 19px; font-weight: 800; font-stretch: 115%; }
+  .s-paid .next { height: 60px; border-radius: 12px; background: var(--ink); color: var(--cream); display: grid; place-items: center; font-size: 19px; font-weight: 800; font-stretch: 115%; margin-bottom: 4px; }
+  .s-paid .land { animation: land 260ms cubic-bezier(.2,.9,.25,1) both; }
+  @keyframes land { from { transform: scale(.96); opacity: .3; } }
+
+  .hero-band { margin-top: 0; }
+
+  /* product: the money's journey along the band */
+  section { scroll-margin-top: 80px; }
+  .product { padding: clamp(96px, 12vw, 168px) 0 0; }
+  .split { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 48px; align-items: end; }
+  .journey-head { margin-top: clamp(72px, 9vw, 128px); display: flex; justify-content: space-between; align-items: end; gap: 32px; flex-wrap: wrap; }
+  .journey-head p { margin: 0; max-width: 46ch; color: var(--ink-2); }
+  .journey { margin-top: 40px; }
+  .journey .band { height: 88px; }
+  .stations { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .station { padding: 28px 24px 0 0; border-left: 1px solid var(--rule); padding-left: 24px; position: relative; }
+  .station:first-child { border-left: 0; padding-left: 0; }
+  .station .label { color: var(--ink-3); }
+  .station .big { font-size: clamp(40px, 4.6vw, 64px); font-weight: 900; font-stretch: 115%; letter-spacing: -.03em; line-height: 1; margin: 10px 0 10px; }
+  .station p { margin: 0; color: var(--ink-2); max-width: 30ch; }
+  .journey .pin { position: absolute; top: 18px; width: 64px; height: 52px; border-radius: 10px; background: var(--orange); color: var(--cream); display: grid; place-items: center; z-index: 2; }
+
+  /* the night: the app's own result fields */
+  .night { padding: clamp(112px, 13vw, 184px) 0 0; }
+  .fields { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 56px; }
+  .field { border-radius: 24px; padding: 32px 32px 28px; min-height: 420px; display: flex; flex-direction: column; justify-content: space-between; color: var(--ink); }
+  .field.paid { background: var(--paid); } .field.held { background: var(--held); }
+  .field .word { font-weight: 900; font-stretch: 125%; letter-spacing: -.05em; line-height: .86; margin: 0; }
+  .field.paid .word { font-size: clamp(110px, 13vw, 184px); }
+  .field.held .word { font-size: clamp(54px, 6vw, 84px); letter-spacing: -.035em; line-height: .92; }
+  .field .row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; border-top: 2px solid var(--ink); padding-top: 14px; font-size: 15px; gap: 4px 16px; }
+  .field .row b { white-space: nowrap; }
+  .field .row b { font-size: 22px; font-weight: 800; font-stretch: 115%; }
+  .field .top { display: flex; justify-content: space-between; font-size: 14px; font-weight: 700; }
+  .field .pill { border: 1.5px solid var(--ink); border-radius: 18px; padding: 4px 12px; display: inline-flex; gap: 6px; align-items: center; }
+  .field .pill i { width: 7px; height: 7px; border-radius: 50%; background: var(--ink); }
+  .caption { display: flex; flex-direction: column; gap: 8px; padding: 20px 4px 0; }
+  .caption p { margin: 0; color: var(--ink-2); max-width: 44ch; }
+  .trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; margin-top: 88px; padding-top: 40px; border-top: 1px solid var(--rule); }
+  .trio .viz { height: 168px; display: flex; flex-direction: column; justify-content: flex-end; margin-bottom: 24px; }
+  .trio p { margin: 8px 0 0; color: var(--ink-2); }
+  .sweeps { list-style: none; margin: 0; padding: 0; font-size: 15px; }
+  .sweeps li { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+  .sweeps li:first-child { padding-top: 0; }
+  .sweeps li span { color: var(--ink-3); }
+  .sweeps li.total span { color: var(--ink); }
+  .sweeps .total { font-size: 34px; font-weight: 900; font-stretch: 115%; letter-spacing: -.02em; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: baseline; }
+  .sweeps .total small { font-size: 13px; font-weight: 700; color: var(--ink-3); letter-spacing: 0; }
+  .stands { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; font-size: 14px; }
+  .stands li { display: grid; grid-template-columns: 1fr auto; gap: 6px 12px; }
+  .stands li > span:last-child { font-weight: 700; }
+  .stands .thread { grid-column: 1 / -1; height: 14px; background-color: var(--ink); background-image: repeating-linear-gradient(90deg, rgba(255,255,255,.06) 0 2px, transparent 2px 6px); display: flex; align-items: center; padding: 0 6px; border-radius: 2px; }
+  .stands .thread i { display: block; height: 3px; background: repeating-linear-gradient(90deg, var(--paid) 0 7px, transparent 7px 11px); }
+  .left .big { font-size: 64px; font-weight: 900; font-stretch: 115%; letter-spacing: -.04em; line-height: 1; }
+  .left .sub { font-size: 14px; color: var(--ink-2); margin-top: 6px; }
+
+  /* how it works: four stations on one band */
+  .how { padding: clamp(112px, 13vw, 184px) 0 0; }
+  .timeline { margin-top: 56px; }
+  .timeline .band { height: 56px; }
+  .marks { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(4, 1fr); padding-inline: var(--gutter); max-width: var(--max); margin: 0 auto; z-index: 2; }
+  .marks i { width: 36px; height: 28px; border-radius: 7px; background: var(--orange); align-self: center; }
+  .moments { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; padding-top: 32px; }
+  .moment h3 { font-size: clamp(32px, 3.2vw, 44px); font-weight: 900; font-stretch: 115%; letter-spacing: -.03em; line-height: 1; margin: 6px 0 16px; }
+  .moment .label { color: var(--ink-3); }
+  .moment p { margin: 0 0 18px; color: var(--ink-2); font-size: 16px; }
+  .moment ul { list-style: none; margin: 0; padding: 0; font-size: 14px; font-weight: 700; }
+  .moment li { padding: 10px 0; border-top: 1px solid var(--rule); }
+
+  /* faq */
+  .faq { padding: clamp(112px, 13vw, 184px) 0 0; }
+  .faq .split { align-items: start; }
+  .qa { border-top: 2px solid var(--ink); }
+  details { border-bottom: 1px solid var(--rule); }
+  summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: 24px; padding: 22px 0; font-size: 21px; font-weight: 800; font-stretch: 115%; letter-spacing: -.01em; }
+  summary::-webkit-details-marker { display: none; }
+  summary svg { flex: none; transition: transform 200ms; margin-top: 4px; }
+  details[open] summary svg { transform: rotate(45deg); }
+  details p { margin: -6px 0 24px; color: var(--ink-2); max-width: 58ch; }
+
+  /* close */
+  .close { margin-top: clamp(112px, 13vw, 184px); position: relative; min-height: 640px; color: var(--cream); background: #120D0A; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; }
+  .close img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 70% 40%; }
+  .close::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(18,13,10,.86) 0%, rgba(18,13,10,.55) 46%, rgba(18,13,10,0) 75%); z-index: 1; }
+  .close .wrap { position: relative; z-index: 2; padding-bottom: 72px; width: 100%; }
+  .close h2 { color: var(--cream); max-width: 11ch; }
+  .close p { color: var(--cream-2); max-width: 42ch; margin: 24px 0 36px; font-size: 19px; }
+  .close .band { position: relative; z-index: 2; }
+
+  footer.foot { padding: 48px 0 40px; }
+  .foot .wrap { display: flex; flex-wrap: wrap; gap: 24px 48px; align-items: flex-start; justify-content: space-between; }
+  .foot nav { display: flex; gap: 28px; flex-wrap: wrap; font-size: 15px; font-weight: 600; }
+  .foot nav a { text-decoration: none; color: var(--ink-2); }
+  .foot small { display: block; color: var(--ink-3); font-size: 13px; margin-top: 10px; }
+
+  @media (max-width: 900px) {
+    .nav nav { display: none; } .nav .go { margin-left: auto; }
+    .hero .wrap, .split { grid-template-columns: 1fr; }
+    .hero .copy { padding-bottom: 8px; }
+    .terminal { margin-bottom: -32px; transform: scale(.92); }
+    .stations, .moments, .trio, .fields { grid-template-columns: 1fr; }
+    .station { border-left: 0; padding-left: 0; border-top: 1px solid var(--rule); }
+    .station:first-child { border-top: 0; }
+    .journey .pin { display: none; }
+    .marks { display: none; }
+    .field { min-height: 340px; }
+    .trio { gap: 56px; }
+    .close { min-height: 720px; }
+    .close::before { background: linear-gradient(0deg, rgba(18,13,10,.92) 0%, rgba(18,13,10,.6) 55%, rgba(18,13,10,.1) 100%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ticker span, .s-tick span, .read .s-sew { animation: none !important; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="lockup" href="#top" aria-label="Tapa home"><span class="tile"><span class="mk" data-s="27"></span></span><span class="wm" data-wordmark></span></a>
+    <nav aria-label="Main"><a href="#product">Product</a><a href="#how-it-works">How it works</a><a href="#faq">FAQ</a></nav>
+    <a class="go" href="mailto:hello@expendi.app?subject=Tapa%20for%20our%20event">Talk to us</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" aria-labelledby="h-hero">
+    <div class="wrap">
+      <div class="copy">
+        <h1 id="h-hero" class="display">Your ticket is&nbsp;now your wallet</h1>
+        <p class="lede">Guests load money onto an NFC wristband and tap to pay at every bar and stand. About a second per sale, even when the signal drops.</p>
+        <div class="actions">
+          <a class="go" href="mailto:hello@expendi.app?subject=Tapa%20for%20our%20event">Talk to us <i><svg class="i" width="18" height="18" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
+          <a class="textlink" href="#how-it-works">See how it works</a>
+        </div>
+      </div>
+
+      <div class="terminal" aria-label="A Tapa terminal taking a 650 shilling payment">
+        <span class="nfc">Bands tap here</span>
+        <div class="screen">
+          <div class="scr" id="demo">
+            <div class="bar"><span>22:14</span><span style="display:flex;gap:4px;align-items:center"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M2 22h20V2z"/></svg><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21 23.5 6.7C23.1 6.4 18.6 3 12 3S.9 6.4.5 6.7z"/></svg><svg width="13" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M15.7 4H14V2h-4v2H8.3C7.6 4 7 4.6 7 5.3v15.4c0 .7.6 1.3 1.3 1.3h7.4c.7 0 1.3-.6 1.3-1.3V5.3C17 4.6 16.4 4 15.7 4z"/></svg></span></div>
+            <div class="body">
+              <div class="lbl">Kilele Bar · Till 1</div>
+              <div class="s-across" id="d-across">
+                <div class="s-tick l"><span>650 KES &nbsp;·&nbsp; 650 KES &nbsp;·&nbsp; 650 KES &nbsp;·&nbsp; 650 KES &nbsp;·&nbsp; 650 KES &nbsp;·&nbsp; 650 KES &nbsp;·&nbsp; 650 KES &nbsp;·&nbsp; 650 KES &nbsp;·&nbsp; </span></div>
+                <div class="s-tick r"><span>650 KES &nbsp;·&nbsp; 650 KES &nbsp;·&nbsp; 650 KES &nbsp;·&nbsp; 650 KES &nbsp;·&nbsp; 650 KES &nbsp;·&nbsp; 650 KES &nbsp;·&nbsp; 650 KES &nbsp;·&nbsp; 650 KES &nbsp;·&nbsp; </span></div>
+                <i class="s-sew tl"></i><i class="s-sew tr"></i><i class="s-sew bl"></i><i class="s-sew br"></i>
+                <div class="s-buckle"><span></span><span></span><span class="mk" data-s="32" style="display:contents"></span></div>
+              </div>
+              <div class="nudge"><svg class="i" width="24" height="24" viewBox="0 0 24 24" style="stroke-width:2.6;flex:none;margin-top:3px"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+                <div><b id="d-instr">Hold band to the top</b><span id="d-sub">Waiting for tap</span></div></div>
+              <div style="flex:1"></div>
+              <div class="label">Charging · KES</div>
+              <div class="s-amt">650</div>
+              <div class="s-cancel">Cancel</div>
+            </div>
+            <div class="s-flood" id="d-flood"></div>
+            <div class="s-paid" id="d-paid">
+              <div class="body">
+                <div class="lbl">Kilele Bar · Till 1</div>
+                <div id="d-land">
+                  <div class="word">Paid</div>
+                  <div class="amt">650 <small>KES</small></div>
+                </div>
+                <div style="flex:1"></div>
+                <div class="ruled"><span>Achieng O. · balance left</span><b>1,350 KES</b></div>
+                <div class="next">Next sale</div>
+              </div>
+            </div>
+            <div class="nav3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M17 4.5v15L5.5 12z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="5" width="14" height="14" rx="1.5"/></svg></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="band hero-band" aria-hidden="true"><div class="ticker"><span>{{RIBBON}}{{RIBBON}}</span></div></div>
+  </section>
+
+  <section class="product" id="product" aria-labelledby="h-product">
+    <div class="wrap">
+      <div class="split">
+        <h2 id="h-product" class="h2">One band runs the gate, the bars and the payouts</h2>
+        <p class="lede">Every ticket gets its own wallet. Guests load it, wear the band that points at it, and tap to pay. Each stand's takings land in its own wallet while the night is still going.</p>
+      </div>
+      <div class="journey-head">
+        <h3 class="h3">Load with M-Pesa.<br>Spend with a tap.</h3>
+        <p>Guests top up in shillings. Every tap is held on the spot and swept to the stand's wallet every ten minutes, settled as USDC on Base. Nobody at the bar ever sees a token.</p>
+      </div>
+    </div>
+    <div class="journey">
+      <div class="band" aria-hidden="true"><div class="ticker"><span>{{FLOW}}{{FLOW}}</span></div></div>
+      <div class="wrap">
+        <div class="stations">
+          <div class="station"><span class="label">Load</span><div class="big">M-Pesa</div><p>Top up in shillings, before or during the event.</p></div>
+          <div class="station"><span class="label">Spend</span><div class="big">KES 650</div><p>Tap at Kilele Bar. Held on the spot, about a second.</p></div>
+          <div class="station"><span class="label">Settle</span><div class="big">10 min</div><p>Swept to the stand's own wallet as USDC on Base.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="night" aria-labelledby="h-night">
+    <div class="wrap">
+      <h2 id="h-night" class="h2" style="max-width:14ch">What the night looks like at the till</h2>
+      <div class="fields">
+        <div>
+          <div class="field paid" role="img" aria-label="A paid result on the terminal">
+            <div class="top"><span>Kilele Bar · Till 1</span><span>22:14</span></div>
+            <div>
+              <p class="word">Paid</p>
+              <div class="row" style="margin-top:28px"><span>Achieng O. · balance left</span><b>1,350 KES</b></div>
+            </div>
+          </div>
+          <div class="caption"><h3 class="h3">A sale takes about a second</h3><p>The cashier keys the amount, the guest taps. No phone, no PIN, no waiting on an M-Pesa prompt.</p></div>
+        </div>
+        <div>
+          <div class="field held" role="img" aria-label="A sale saved offline on the terminal">
+            <div class="top"><span class="pill"><i></i>Offline · 2 queued</span><span>22:16</span></div>
+            <div>
+              <p class="word">Saved, will&nbsp;send</p>
+              <div class="row" style="margin-top:28px"><span>Offline allowance used</span><b>1,600 / 6,500 KES</b></div>
+            </div>
+          </div>
+          <div class="caption"><h3 class="h3">Keeps selling when the signal drops</h3><p>Terminals queue sales up to an offline allowance you set and send them the moment they reconnect.</p></div>
+        </div>
+      </div>
+
+      <div class="trio">
+        <div>
+          <div class="viz">
+            <ul class="sweeps">
+              <li class="total"><span>KES 48,250</span><small>Kilele Bar wallet</small></li>
+              <li><span>Sweep 22:20</span><b>+ KES 6,400</b></li>
+              <li><span>Sweep 22:10</span><b>+ KES 5,150</b></li>
+              <li><span>Sweep 22:00</span><b>+ KES 7,900</b></li>
+            </ul>
+          </div>
+          <h3 class="h3">Stands get paid during the night</h3>
+          <p>Every ten minutes, held money moves to each stand's own wallet. No float, no waiting days.</p>
+        </div>
+        <div>
+          <div class="viz">
+            <ul class="stands" aria-label="Sales by stand">
+              <li><span>Kilele Bar</span><span>KES 184,300</span><span class="thread"><i style="width:92%"></i></span></li>
+              <li><span>Nyama Choma Grill</span><span>KES 151,900</span><span class="thread"><i style="width:76%"></i></span></li>
+              <li><span>Main Stage Bar</span><span>KES 128,450</span><span class="thread"><i style="width:64%"></i></span></li>
+            </ul>
+          </div>
+          <h3 class="h3">Watch every stand, live</h3>
+          <p>The organiser console shows sales as they happen, freezes a lost band, and handles late reversals with a reason on record.</p>
+        </div>
+        <div>
+          <div class="viz left">
+            <span class="label" style="color:var(--ink-3)">Left after the event</span>
+            <div class="big">KES 1,350</div>
+            <div class="sub">Still in the guest's wallet</div>
+          </div>
+          <h3 class="h3">Nothing to refund at the end</h3>
+          <p>Unspent money never left the guest's wallet, so there is no refund queue when the lights come up.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="how" id="how-it-works" aria-labelledby="h-how">
+    <div class="wrap">
+      <div class="split">
+        <h2 id="h-how" class="h2">An event, from setup to the last round</h2>
+        <p class="lede">Four moments, four kinds of people. Each one gets a screen built for exactly what they do.</p>
+      </div>
+    </div>
+    <div class="timeline">
+      <div class="band" aria-hidden="true">
+        <div class="marks"><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="wrap">
+        <div class="moments">
+          <article class="moment"><span class="label">Organiser</span><h3>Before</h3>
+            <p>Create the event, add your stands and register a terminal for each one by scanning its setup code. Import the guest list and the bands.</p>
+            <ul><li>Stands, prices and caps</li><li>Terminals set up by QR</li></ul></article>
+          <article class="moment"><span class="label">Gate staff</span><h3>Doors</h3>
+            <p>Scan the ticket and link a band. From that moment the guest's wallet is locked to the event, which is what makes a green Paid on the terminal a promise.</p>
+            <ul><li>Ticket scan, band linked</li><li>Re-entry is a single tap</li></ul></article>
+          <article class="moment"><span class="label">Cashiers and help desk</span><h3>All night</h3>
+            <p>Cashiers key the amount and guests tap. A mistake is reversed on the terminal; anything later goes to the help desk, with a reason and a name on the record.</p>
+            <ul><li>Swept to stands every 10 min</li><li>Reversals with an audit trail</li></ul></article>
+          <article class="moment"><span class="label">Organiser</span><h3>Close</h3>
+            <p>Close checks every stand's numbers against what actually moved, takes the fees, and gives you a statement. Stands keep their takings; guests keep what they did not spend.</p>
+            <ul><li>Statement per stand</li><li>Unspent money stays with guests</li></ul></article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq" id="faq" aria-labelledby="h-faq">
+    <div class="wrap split">
+      <div>
+        <h2 id="h-faq" class="h2" style="max-width:9ch">Questions organisers ask</h2>
+        <p class="lede" style="margin-top:24px">The short version of how Tapa behaves when a real night gets messy.</p>
+      </div>
+      <div class="qa">
+        <details open><summary>What if the venue has no signal?{{PLUS}}</summary><p>Terminals keep selling. Each one can take sales on trust up to an offline allowance you set, queues them, and sends them as soon as it reconnects. A sale can never be charged twice.</p></details>
+        <details><summary>What happens when a guest loses their band?{{PLUS}}</summary><p>The help desk freezes it from the console straight away and links a replacement. The balance lives in the guest's wallet, not on the band, so nothing is lost.</p></details>
+        <details><summary>Can a cashier undo a mistake?{{PLUS}}</summary><p>Yes, on the terminal, within the reversal window. After that the help desk reverses it from the console, and the audit log records who did it and why.</p></details>
+        <details><summary>How and when do stands get paid?{{PLUS}}</summary><p>Every ten minutes, held money moves from guests' wallets to each stand's own wallet. Fees are taken hourly and once more at close, so stands are not waiting days after the event.</p></details>
+        <details><summary>What happens to money a guest does not spend?{{PLUS}}</summary><p>It stays in their own wallet. There is no organiser float and no refund queue at the end of the night.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="close" aria-labelledby="h-close">
+    <img src="../src/assets/hero-festival.jpg" alt="Festival crowd at sunset, one raised arm wearing an event wristband">
+    <div class="wrap">
+      <h2 id="h-close" class="h2">Running an event this season?</h2>
+      <p>Tell us the date, the venue and how many stands. We'll set you up with bands, terminals and the organiser console.</p>
+      <a class="go" href="mailto:hello@expendi.app?subject=Tapa%20for%20our%20event">Talk to us <i><svg class="i" width="18" height="18" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i></a>
+    </div>
+    <div class="band" aria-hidden="true"><div class="ticker"><span>{{RIBBON}}{{RIBBON}}</span></div></div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div>
+      <a class="lockup" href="#top" style="--t:40px" aria-label="Tapa"><span class="tile"><span class="mk" data-s="30"></span></span><span class="wm" data-wordmark></span></a>
+      <small>by Expendi · © 2026 · Photo by Daniela Becerra on Unsplash.</small>
+    </div>
+    <nav aria-label="Footer"><a href="#product">Product</a><a href="#how-it-works">How it works</a><a href="#faq">FAQ</a><a href="mailto:hello@expendi.app?subject=Tapa%20for%20our%20event">Contact</a></nav>
+  </div>
+</footer>
+
+<script>
+  let markId = 0;
+  function markSvg(s) {
+    const id = `tm${++markId}`;
+    return `<svg width="${s}" height="${s}" viewBox="87 98.5 480 480" aria-hidden="true" style="display:block"><defs><mask id="${id}" maskUnits="userSpaceOnUse" x="87" y="98.5" width="480" height="480"><rect x="87" y="98.5" width="480" height="480" fill="#fff"/><rect x="400" y="328" width="57" height="21" fill="#000"/><rect x="479" y="328" width="45" height="21" fill="#000"/></mask></defs><g mask="url(#${id})" fill="currentColor"><path fill-rule="evenodd" d="M143 338.5a173.5 173.5 0 1 0 347 0a173.5 173.5 0 1 0 -347 0ZM224.5 338.5a100 103.5 0 1 0 200 0a100 103.5 0 1 0 -200 0Z"/><rect x="432" y="172" width="79" height="334"/></g></svg>`;
+  }
+  const WORDMARK = `<svg viewBox="0 0 {{WM_W}} {{WM_H}}" role="img" aria-label="tapa"><path fill="currentColor" fill-rule="evenodd" d="{{WM_D}}"/></svg>`;
+  for (const h of document.querySelectorAll("span.mk")) h.innerHTML = markSvg(h.dataset.s);
+  for (const w of document.querySelectorAll("[data-wordmark]")) w.innerHTML = WORDMARK;
+
+  // The terminal plays a real sale: waiting, band read, stitches, flood, Paid.
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+  const across = document.getElementById("d-across");
+  const flood = document.getElementById("d-flood");
+  const paid = document.getElementById("d-paid");
+  const instr = document.getElementById("d-instr");
+  const sub = document.getElementById("d-sub");
+  const SMOOTH = CSS.supports("animation-timing-function", "linear(0, 1)") ? getComputedStyle(document.documentElement).getPropertyValue("--smooth").trim() : "ease-out";
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+  async function loop() {
+    if (reduced.matches) { paid.classList.add("on"); return; }
+    for (;;) {
+      across.classList.remove("read"); paid.classList.remove("on");
+      instr.textContent = "Hold band to the top"; sub.textContent = "Waiting for tap";
+      await wait(2600);
+      across.classList.add("read");
+      instr.textContent = "Keep it there"; sub.textContent = "Checking band · #B1310";
+      await wait(1300);
+      await flood.animate([{ transform: "scale(0)" }, { transform: "scale(1)" }], { duration: 420, easing: SMOOTH, fill: "forwards" }).finished;
+      paid.classList.add("on");
+      const land = document.getElementById("d-land"); land.classList.remove("land"); void land.offsetWidth; land.classList.add("land");
+      flood.getAnimations().forEach((a) => a.cancel());
+      await wait(2600);
+    }
+  }
+  loop();
+</script>
+</body>
+</html>

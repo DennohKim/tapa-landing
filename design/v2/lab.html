@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Band lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&display=block" rel="stylesheet">
+<style>
+  html, body { margin: 0; height: 100%; background: #E6E8EA; }
+  canvas { width: 100vw; height: 100vh; display: block; }
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script type="module">
+  import { buildBand, createStage } from "./band.js";
+  const q = new URLSearchParams(location.search);
+  const n = (k, d) => (q.has(k) ? parseFloat(q.get(k)) : d);
+  if (q.has("poster")) document.documentElement.style.background = document.body.style.background = "transparent";
+  await document.fonts.load('800 40px "Bricolage Grotesque"');
+  const stage = createStage(document.getElementById("c"), { distance: n("d", 24) });
+  const band = await buildBand(q.get("print") || "ink", { font: '"Bricolage Grotesque"' });
+  const D = Math.PI / 180;
+  stage.rig.add(band);
+  stage.rig.rotation.set(n("rx", 62) * D, n("ry", -24) * D, n("rz", 8) * D, "YXZ");
+  if (stage.floor) { stage.floor.position.set(0, -4.5, -2); stage.floor.scale.set(9, 1.1, 1); }
+  stage.resize();
+  stage.render();
+  document.body.dataset.ready = "1";
+</script>
+</body>
+</html>

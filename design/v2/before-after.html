@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tapa landing · before and after</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400..800&display=swap" rel="stylesheet">
+<style>
+  :root { color-scheme: light; --ground: #E4E7EA; --ink: #121417; --ink-2: #4A5057; --rule: rgba(18,20,23,.14); --g: clamp(20px, 4vw, 64px); }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--ground); color: var(--ink); font: 400 17px/1.5 "Bricolage Grotesque", "Segoe UI", Roboto, Arial, sans-serif; padding: 64px var(--g) 104px; }
+  h1 { margin: 0 0 8px; font-size: clamp(40px, 5vw, 72px); line-height: .95; font-weight: 800; font-variation-settings: "wdth" 82, "opsz" 96; letter-spacing: -.028em; }
+  h2 { margin: 72px 0 20px; font-size: 26px; font-weight: 750; font-variation-settings: "wdth" 90; }
+  p { margin: 0; color: var(--ink-2); max-width: 62ch; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .pair.phone { grid-template-columns: repeat(2, minmax(0, 300px)); }
+  figure { margin: 0; }
+  figure img { display: block; width: 100%; height: auto; border-radius: 10px; box-shadow: 0 24px 48px -32px rgba(10,12,14,.45); }
+  figcaption { margin-top: 10px; font-size: 15px; font-weight: 650; }
+  table { border-collapse: collapse; width: 100%; max-width: 880px; font-size: 16px; }
+  th, td { text-align: left; padding: 12px 16px 12px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  th { font-weight: 700; }
+  td.num { font-variant-numeric: tabular-nums; }
+  @media (max-width: 760px) { table { font-size: 15px; } th, td { padding-right: 10px; } }
+  a { color: inherit; }
+  @media (max-width: 760px) { .pair { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<h1>Tapa landing, before and after</h1>
+<p>v1 is the warm-paper mockup in <code>design/landing-mockup.html</code>. v2 is <a href="index.html">design/v2/index.html</a>: one 3D wristband that travels the page, taps the terminal and floods the room green.</p>
+
+<h2>First screen, desktop</h2>
+<div class="pair">
+  <figure><img src="shots/before/1440.png" width="1440" height="900" alt="v1 first screen: warm paper ground, big black headline, a terminal showing Paid"><figcaption>Before (v1)</figcaption></figure>
+  <figure><img src="shots/r4/1440.png" width="2880" height="1800" alt="v2 first screen: a lit 3D woven wristband with labels for its tag, print and lock beside the headline"><figcaption>After (v2)</figcaption></figure>
+</div>
+
+<h2>First screen, phone</h2>
+<div class="pair phone">
+  <figure><img src="shots/before/390.png" width="390" height="844" alt="v1 phone first screen"><figcaption>Before (v1)</figcaption></figure>
+  <figure><img src="shots/r4/390.png" width="780" height="1688" alt="v2 phone first screen with the wristband above the headline"><figcaption>After (v2)</figcaption></figure>
+</div>
+
+<h2>Checks</h2>
+<table>
+  <thead><tr><th></th><th>Before (v1)</th><th>After (v2)</th></tr></thead>
+  <tbody>
+    <tr><td>Scan FAILs</td><td class="num">5 (contrast ×14 labels, clipped ticker, overlapping demo states, broken photo path when served alone)</td><td class="num">0</td></tr>
+    <tr><td>Distinct text sizes</td><td class="num">19–23</td><td class="num">13–14 (most from the POS screen replica)</td></tr>
+    <tr><td>Matrix passes with a FAIL</td><td class="num">12 of 12</td><td class="num">0 of 12</td></tr>
+    <tr><td>Engines checked</td><td>Chrome, Firefox, Safari</td><td>Chrome, Firefox, Safari (WebKit), Windows 125/150/High Contrast, Linux, Android, 320 reflow, reduced motion, translation length</td></tr>
+    <tr><td>Critique (13 lines + fidelity)</td><td>not scored</td><td>Round 1: two lines at 2. Round 2: done by the stop rule (Craft 3, the rest 4–5)</td></tr>
+  </tbody>
+</table>
+</body>
+</html>
