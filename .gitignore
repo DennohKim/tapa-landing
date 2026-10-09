@@ -41,3 +41,6 @@ yarn-error.log*
 next-env.d.ts
 
 !.env.example
+
+# design workspace renders (regenerable, ~170 MB)
+/design/v2/shots/

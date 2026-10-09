@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tapa · B · Stage LED wall</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;900&family=Big+Shoulders+Text:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  /* B: the LED wall beside the main stage at 22:14. Black truss, warm-white LEDs, green only when a sale lands. */
+  :root {
+    color-scheme: dark;
+    --ground: #0B0C0B; --panel: #111311; --ink: #F1EEE6; --ink-2: #B4B0A6; --rule: rgba(241,238,230,.14);
+    --paid: #2BD46E; --paid-ink: #06130A;
+    --display: "Big Shoulders Display", "Arial Narrow", "Roboto Condensed", sans-serif;
+    --text: "Big Shoulders Text", "Segoe UI", Roboto, Arial, sans-serif;
+    --g: clamp(20px, 3.4vw, 56px);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--text); font-size: 19px; line-height: 1.45; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  .screen { min-height: 100svh; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); grid-template-rows: auto 1fr auto; gap: 0 var(--g); padding: 0 var(--g) var(--g); }
+  .nav { grid-column: 1 / -1; display: flex; align-items: center; gap: 28px; height: 84px; border-bottom: 1px solid var(--rule); }
+  .lockup { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--display); font-weight: 900; font-size: 30px; letter-spacing: .01em; }
+  .tile { width: 34px; height: 34px; border-radius: 6px; background: #FB5B37; color: #ECEBDB; display: grid; place-items: center; }
+  .nav nav { display: flex; gap: 28px; margin-left: auto; font-weight: 600; font-size: 17px; text-transform: uppercase; letter-spacing: .06em; }
+  .nav nav a { text-decoration: none; color: var(--ink-2); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; height: 56px; padding: 0 26px; background: var(--paid); color: var(--paid-ink); text-decoration: none; font-family: var(--display); font-weight: 900; font-size: 22px; text-transform: uppercase; letter-spacing: .04em; border: 1px solid transparent; }
+  .nav .btn { height: 44px; font-size: 18px; padding: 0 18px; }
+  :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+  .copy { grid-row: 2 / 4; display: flex; flex-direction: column; justify-content: flex-end; padding: 48px 0 8px; }
+  h1 { margin: 0; font-family: var(--display); font-weight: 900; font-size: clamp(72px, 9.4vw, 168px); line-height: .84; letter-spacing: -.01em; text-transform: uppercase; }
+  .copy p { margin: 28px 0 32px; max-width: 30ch; font-size: clamp(18px, 1.4vw, 21px); color: var(--ink-2); }
+  .wall { grid-column: 2; grid-row: 2; position: relative; margin-top: var(--g); background: var(--panel); border: 1px solid #1d201d; min-height: 420px; }
+  .wall canvas { position: absolute; inset: 14px; width: calc(100% - 28px); height: calc(100% - 28px); }
+  .wall .cap { position: absolute; left: 14px; bottom: -30px; font-size: 14px; color: var(--ink-2); text-transform: uppercase; letter-spacing: .08em; }
+  .tills { grid-column: 2; grid-row: 3; margin: 48px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 24px; }
+  .tills li { border-top: 1px solid var(--rule); padding-top: 14px; display: flex; flex-direction: column; }
+  .tills span { font-size: 15px; color: var(--ink-2); text-transform: uppercase; letter-spacing: .06em; }
+  .tills b { font-family: var(--display); font-weight: 700; font-size: clamp(30px, 2.8vw, 44px); line-height: 1.05; font-variant-numeric: tabular-nums; }
+  @media (max-width: 900px) {
+    .screen { grid-template-columns: 1fr; grid-template-rows: auto auto auto auto; }
+    .nav nav { display: none; } .nav .btn { margin-left: auto; }
+    .wall { grid-column: 1; grid-row: 2; min-height: 300px; }
+    .copy { grid-row: 3; padding-top: 48px; }
+    .tills { grid-column: 1; grid-row: 4; grid-template-columns: 1fr; gap: 0; }
+    .tills li { flex-direction: row; justify-content: space-between; align-items: baseline; padding: 12px 0; }
+  }
+</style>
+</head>
+<body>
+<div class="screen">
+  <header class="nav">
+    <a class="lockup" href="#top" aria-label="Tapa home"><span class="tile" data-mark="22"></span>tapa</a>
+    <nav aria-label="Main"><a href="#how">How it works</a><a href="#stands">For stands</a><a href="#faq">Questions</a></nav>
+    <a class="btn" href="mailto:hello@expendi.app?subject=Tapa%20for%20our%20event">Talk to us</a>
+  </header>
+  <main class="copy" id="top">
+    <h1>Your ticket is now your wallet</h1>
+    <p>Guests load money onto an NFC wristband with M-Pesa and tap to pay at every bar and stand. About a second per sale, even when the signal drops.</p>
+    <div><a class="btn" href="mailto:hello@expendi.app?subject=Tapa%20for%20our%20event">Talk to us about your event</a></div>
+  </main>
+  <div class="wall" role="img" aria-label="LED wall showing a 650 shilling sale landing at Kilele Bar, Till 1">
+    <canvas id="led"></canvas>
+    <span class="cap">Main stage wall · 22:14</span>
+  </div>
+  <ul class="tills" aria-label="Sales so far tonight">
+    <li><span>Kilele Bar</span><b data-count="184300">KES 184,300</b></li>
+    <li><span>Nyama Choma Grill</span><b data-count="151900">KES 151,900</b></li>
+    <li><span>Main Stage Bar</span><b data-count="128450">KES 128,450</b></li>
+  </ul>
+</div>
+<script>
+  const MARK = (s) => `<svg width="${s}" height="${s}" viewBox="87 98.5 480 480" aria-hidden="true"><defs><mask id="m${s}"><rect x="87" y="98.5" width="480" height="480" fill="#fff"/><rect x="400" y="328" width="57" height="21" fill="#000"/><rect x="479" y="328" width="45" height="21" fill="#000"/></mask></defs><g mask="url(#m${s})" fill="currentColor"><path fill-rule="evenodd" d="M143 338.5a173.5 173.5 0 1 0 347 0a173.5 173.5 0 1 0 -347 0ZM224.5 338.5a100 103.5 0 1 0 200 0a100 103.5 0 1 0 -200 0Z"/><rect x="432" y="172" width="79" height="334"/></g></svg>`;
+  for (const el of document.querySelectorAll("[data-mark]")) el.innerHTML = MARK(el.dataset.mark);
+
+  // LED wall: a low-res source canvas is sampled on a grid; each cell becomes one LED.
+  const canvas = document.getElementById("led"), ctx = canvas.getContext("2d");
+  const src = document.createElement("canvas"), sx = src.getContext("2d", { willReadFrequently: true });
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let cols, rows, pitch, dpr, ptr = { x: -1e4, y: -1e4 };
+  const font = (w, px) => `${w} ${px}px "Big Shoulders Display", "Arial Narrow", sans-serif`;
+  function size() {
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    const r = canvas.getBoundingClientRect();
+    canvas.width = r.width * dpr; canvas.height = r.height * dpr;
+    pitch = r.width > 600 ? 8 : 6;
+    cols = Math.floor(r.width / pitch); rows = Math.floor(r.height / pitch);
+    src.width = cols; src.height = rows;
+  }
+  canvas.parentElement.addEventListener("pointermove", (e) => { const r = canvas.getBoundingClientRect(); ptr = { x: e.clientX - r.left, y: e.clientY - r.top }; });
+  canvas.parentElement.addEventListener("pointerleave", () => (ptr = { x: -1e4, y: -1e4 }));
+  const T = 7200;
+  function scene(t) {
+    const ph = (t % T) / T, w = cols, h = rows;
+    sx.fillStyle = "#000"; sx.fillRect(0, 0, w, h);
+    sx.textBaseline = "alphabetic";
+    const top = Math.round(h * 0.2);
+    sx.fillStyle = "#666";
+    sx.font = font(700, Math.round(h * 0.14));
+    const label = "KILELE BAR · TILL 1 · KILELE NIGHTS · NAIROBI · ";
+    const lw = sx.measureText(label).width;
+    const off = reduced ? 0 : (t / 60) % lw;
+    sx.fillText(label + label + label, -off, top);
+    sx.fillStyle = "#3a3a3a"; sx.fillRect(0, top + 3, w, 1);
+    if (ph < 0.42 || reduced === false && ph >= 0.92) {
+      sx.fillStyle = "#fff"; sx.font = font(900, Math.round(h * 0.42));
+      sx.fillText("650", Math.round(w * 0.04), Math.round(h * 0.78));
+      sx.fillStyle = "#999"; sx.font = font(700, Math.round(h * 0.13));
+      sx.fillText("TAP BAND TO PAY", Math.round(w * 0.05), Math.round(h * 0.94));
+      const bx = w * 0.78, by = h * 0.6, pulse = reduced ? 0.5 : (t / 900) % 1;
+      sx.strokeStyle = "#fff"; sx.lineWidth = Math.max(1.4, h * 0.03);
+      for (let i = 0; i < 3; i++) { const rr = h * (0.08 + 0.09 * ((i + pulse) % 3)); sx.globalAlpha = 1 - ((i + pulse) % 3) / 3; sx.beginPath(); sx.arc(bx - h * 0.12, by, rr, -0.8, 0.8); sx.stroke(); }
+      sx.globalAlpha = 1;
+    } else if (ph < 0.5) {
+      const k = (ph - 0.42) / 0.08;
+      sx.fillStyle = "#0f0"; sx.beginPath(); sx.arc(w * 0.5, h * 0.55, Math.hypot(w, h) * k, 0, Math.PI * 2); sx.fill();
+    } else {
+      sx.fillStyle = "#0f0"; sx.fillRect(0, top + 4, w, h);
+      sx.fillStyle = "#000"; sx.font = font(900, Math.round(h * 0.5));
+      sx.fillText("PAID", Math.round(w * 0.035), Math.round(h * 0.74));
+      sx.font = font(700, Math.round(h * 0.13));
+      sx.fillText("650 KES · ACHIENG O. · 1,350 LEFT", Math.round(w * 0.045), Math.round(h * 0.93));
+    }
+  }
+  function draw(t) {
+    scene(t);
+    const data = sx.getImageData(0, 0, cols, rows).data;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const buckets = new Map();
+    for (let y = 0; y < rows; y++) for (let x = 0; x < cols; x++) {
+      const i = (y * cols + x) * 4, g = data[i + 1], r = data[i], green = g > 120 && r < 60;
+      let b = Math.max(r, g) / 255;
+      const px = x * pitch + pitch / 2, py = y * pitch + pitch / 2;
+      const d = Math.hypot(px - ptr.x, py - ptr.y);
+      if (d < 90) b = Math.min(1, b + (1 - d / 90) * 0.25);
+      const lv = Math.round(b * 6);
+      const key = (green ? "g" : "w") + lv;
+      if (!buckets.has(key)) buckets.set(key, []);
+      buckets.get(key).push(px, py);
+    }
+    for (const [key, pts] of buckets) {
+      const lv = +key.slice(1), green = key[0] === "g";
+      ctx.fillStyle = lv === 0 ? "rgba(241,238,230,.06)" : green ? `rgba(43,212,110,${0.25 + lv * 0.125})` : `rgba(255,243,224,${0.12 + lv * 0.145})`;
+      const rad = lv === 0 ? pitch * 0.18 : pitch * (0.24 + lv * 0.035);
+      ctx.beginPath();
+      for (let k = 0; k < pts.length; k += 2) { ctx.moveTo(pts[k] + rad, pts[k + 1]); ctx.arc(pts[k], pts[k + 1], rad, 0, Math.PI * 2); }
+      ctx.fill();
+    }
+  }
+  let visible = true;
+  new IntersectionObserver(([e]) => (visible = e.isIntersecting)).observe(canvas);
+  function loop(t) { if (visible && !document.hidden) draw(t); if (!reduced) requestAnimationFrame(loop); }
+  document.fonts.ready.then(() => { size(); addEventListener("resize", size); requestAnimationFrame(reduced ? (t) => draw(5200) : loop); });
+</script>
+</body>
+</html>
